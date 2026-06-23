@@ -1,0 +1,60 @@
+{
+  "patient_id": "P002",
+  "demographics": {
+    "name": "David Chen",
+    "age": 54,
+    "sex": "M"
+  },
+  "problem_list": [
+    {
+      "icd10": "E11.9",
+      "description": "Type 2 Diabetes Mellitus",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin",
+      "dose": "1000mg",
+      "frequency": "twice daily",
+      "prescribed_date": "2024-10-23T09:00:00",
+      "status": "active"
+    },
+    {
+      "name": "Metformin",
+      "dose": "500mg",
+      "frequency": "twice daily",
+      "prescribed_date": "2024-10-23T09:00:00",
+      "status": "discontinued",
+      "discontinued_date": "2026-06-05T09:00:00",
+      "note": "Dose increased from 500mg BID to 1000mg BID due to suboptimal control."
+    }
+  ],
+  "labs": [
+    {
+      "test": "HbA1c",
+      "value": 8.1,
+      "unit": "%",
+      "date": "2026-06-01T09:00:00",
+      "flag": "high"
+    },
+    {
+      "test": "HbA1c",
+      "value": 7.4,
+      "unit": "%",
+      "date": "2025-12-07T09:00:00",
+      "flag": "high"
+    }
+  ],
+  "visit_notes": [
+    {
+      "date": "2026-06-05T09:00:00",
+      "type": "Endocrinology Follow-up",
+      "note": "HbA1c remains above goal at 8.1%. Increasing Metformin to 1000mg BID. Discussed dietary modification, recommended reducing refined carbohydrate intake. Patient agreeable to trial of stricter carb counting."
+    }
+  ],
+  "allergies": [
+    "No known drug allergies"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "patient_id": "P003",
+  "readings": [
+    {
+      "timestamp": "2026-06-01T09:00:00",
+      "metric": "weight",
+      "value": 168.0,
+      "unit": "lbs"
+    },
+    {
+      "timestamp": "2026-06-04T09:00:00",
+      "metric": "weight",
+      "value": 169.5,
+      "unit": "lbs"
+    },
+    {
+      "timestamp": "2026-06-07T09:00:00",
+      "metric": "weight",
+      "value": 171.0,
+      "unit": "lbs"
+    },
+    {
+      "timestamp": "2026-06-10T09:00:00",
+      "metric": "weight",
+      "value": 172.5,
+      "unit": "lbs"
+    },
+    {
+      "timestamp": "2026-06-13T09:00:00",
+      "metric": "weight",
+      "value": 174.0,
+      "unit": "lbs"
+    },
+    {
+      "timestamp": "2026-06-15T01:00:00",
+      "metric": "weight",
+      "value": 175.0,
+      "unit": "lbs"
+    }
+  ],
+  "triggering_alert": {
+    "alert_id": "ALT-P003-001",
+    "patient_id": "P003",
+    "timestamp": "2026-06-15T01:00:00",
+    "device_type": "smart scale",
+    "alert_category": "weight_trend",
+    "measured_values": {
+      "value": 175.0,
+      "unit": "lbs",
+      "change_from_baseline": "+7.0 lbs over 14 days"
+    },
+    "baseline_threshold": {
+      "single_day_change_lbs": 3.0
+    },
+    "note": "Each individual day-over-day delta was within single-reading threshold; alert triggered by cumulative 14-day trend rule."
+  }
+}

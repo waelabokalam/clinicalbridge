@@ -1,0 +1,36 @@
+{
+  "patient_id": "P003",
+  "intake_form": {
+    "chief_complaint": "Feeling a bit more tired than usual, ankles look puffier.",
+    "history_of_present_illness": "Patient reports increasing ankle swelling over the past 1-2 weeks, worse by end of day. Also reports mild increase in shortness of breath when climbing the stairs to her apartment, which she previously could do without issue.",
+    "review_of_systems": "Endorses bilateral ankle edema, mild exertional dyspnea. Denies chest pain, orthopnea, paroxysmal nocturnal dyspnea at this time.",
+    "social_history": "Lives in a third-floor apartment, no elevator.",
+    "family_history": "Non-contributory."
+  },
+  "symptom_diary": [
+    {
+      "date": "2026-06-03T09:00:00",
+      "entry": "Ankles a little swollen by evening, nothing major."
+    },
+    {
+      "date": "2026-06-09T09:00:00",
+      "entry": "Swelling is more noticeable now, socks leaving marks."
+    },
+    {
+      "date": "2026-06-14T09:00:00",
+      "entry": "Got a bit winded going up the stairs today, had to stop halfway."
+    }
+  ],
+  "medication_adherence_log": [
+    {
+      "medication": "Furosemide",
+      "adherence_pct": 90,
+      "note": "Occasionally forgets evening dose"
+    },
+    {
+      "medication": "Carvedilol",
+      "adherence_pct": 100,
+      "note": "Taking as prescribed"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "triage_1": {
+    "patient_id": "P001",
+    "urgency": "Critical",
+    "reasoning": "The patient's blood pressure readings (181/121) are significantly elevated above the baseline threshold (140/90). These values are consistent with hypertensive urgency or emergency, representing an immediate threat to life or limb that requires emergency action before any further synthesis.",
+    "clinical_question": "What is the patient's current clinical status given these critically elevated blood pressure readings, and what immediate interventions are required?",
+    "ehr_query": "Retrieve current antihypertensive medications, any recent medication changes, and recent BP readings or visit notes for this patient.",
+    "anamnesis_query": "Check for any self-reported symptoms such as severe headache, chest pain, shortness of breath, visual changes, or confusion, and inquire about medication adherence."
+  },
+  "triage_2": {
+    "patient_id": "P002",
+    "urgency": "Urgent",
+    "reasoning": "This is the first reading from a new CGM device, and the fasting glucose is significantly elevated at 210 mg/dL. Without a baseline threshold or prior readings, it is impossible to determine a trend or compare to the patient's usual values. However, a fasting glucose of 210 mg/dL is concerning in isolation and warrants prompt clinical review to establish context and ensure appropriate management.",
+    "clinical_question": "What is the clinical significance of this initial elevated fasting glucose reading in the context of the patient's overall diabetes management and history?",
+    "ehr_query": "Retrieve the patient's diabetes diagnosis, current diabetes medications, recent HbA1c values, and any prior glucose monitoring data or relevant clinical notes.",
+    "anamnesis_query": "Check for any self-reported symptoms of hyperglycemia, recent dietary changes, or adherence issues with current diabetes management plan."
+  },
+  "ehr_1": {
+    "patient_id": "P005",
+    "relevant_problem_list": [
+      "Essential Hypertension (ICD-10: I10, status: active, onset: 2023-12-28T09:00:00)",
+      "Chronic Kidney Disease Stage 2 (ICD-10: N18.2, status: active, onset: 2023-12-28T09:00:00)"
+    ],
+    "relevant_medications": [
+      "Amlodipine 10mg once daily (status: active)",
+      "Losartan 100mg once daily (status: active)"
+    ],
+    "relevant_labs": [
+      "Losartan level (urine drug screen, qualitative): sub-therapeutic n/a on 2026-05-26T09:00:00 (flag: abnormal)",
+      "eGFR: 72 mL/min/1.73m2 on 2026-05-26T09:00:00 (flag: normal)"
+    ],
+    "relevant_visit_notes": [
+      "2026-05-26T09:00:00 (Nephrology Follow-up): BP remains elevated despite reported adherence to dual agent regimen. Urine drug screen suggests sub-therapeutic Losartan levels. Adherence discussed with patient; patient reports taking medications as prescribed. Discrepancy noted, will monitor."
+    ],
+    "retrieval_confidence": "high",
+    "flagged_gaps": "No documented history of medication adherence issues prior to 2026-05-26T09:00:00. No specific BP readings are documented in the provided excerpts, only that it 'remains elevated'."
+  },
+  "ehr_2": {
+    "patient_id": "P001",
+    "relevant_problem_list": [
+      "Essential Hypertension (active, onset: 2023-12-28T09:00:00)",
+      "Hyperlipidemia (active, onset: 2023-12-28T09:00:00)"
+    ],
+    "relevant_medications": [
+      "Lisinopril 20mg once daily (active)",
+      "Atorvastatin 10mg once daily (active)"
+    ],
+    "relevant_visit_notes": [
+      "2025-05-11T09:00:00 (Primary Care Visit): Patient started on Lisinopril 20mg daily for BP control. Tolerating well at this visit. No cough reported today.",
+      "2026-04-16T09:00:00 (Primary Care Visit): Routine follow-up. BP 132/84 in clinic, well controlled. Continue current regimen."
+    ],
+    "retrieval_confidence": "low",
+    "flagged_gaps": "No documentation of recent international travel or unusual dietary exposures exists anywhere in the available record. The retrieved excerpts relate only to this patient's hypertension and hyperlipidemia management and do not address the question asked.",
+    "relevant_labs": []
+  },
+  "anamnesis_1": {
+    "patient_id": "SYNTHETIC-TEST",
+    "reported_symptoms_and_timeline": [
+      "Increased anxiety, patient-reported onset over the past month",
+      "Difficulty sleeping, patient-reported onset over the past month"
+    ],
+    "medication_adherence_status": [],
+    "relevant_lifestyle_factors": [
+      "Increased alcohol consumption: patient reports having a glass of wine most evenings to relax, which is more than her usual habit of occasional social drinking."
+    ],
+    "family_history_highlights": [],
+    "patient_expressed_concerns": "Patient expresses anxiety about her health.",
+    "interpretation_confidence": "high",
+    "flagged_gaps": "None identified"
+  },
+  "anamnesis_2": {
+    "patient_id": "SYNTHETIC-TEST",
+    "reported_symptoms_and_timeline": [
+      "Leg swelling, reported as occurring over the past few days",
+      "Increased fatigue, reported as occurring over the past few days",
+      "Subjective feeling of puffiness, reported as occurring over the past few days",
+      "Tightness in shoes by end of day, reported as occurring over the past few days"
+    ],
+    "medication_adherence_status": [],
+    "relevant_lifestyle_factors": [],
+    "family_history_highlights": [],
+    "patient_expressed_concerns": "Patient expresses uncertainty about the relevance of their symptoms ('dunno if its anything').",
+    "interpretation_confidence": "high",
+    "flagged_gaps": "None identified"
+  },
+  "synthesis_1": {
+    "alert_summary": "Urgent: Elevated blood pressure reading (158/97 mmHg) from home BP cuff, with unconfirmed baseline. The clinical question is whether this represents untreated hypertension.",
+    "patient_snapshot": "Patient ID P004. No active problems, medications, or relevant lab data were retrieved from the EHR. The EHR has very limited verified data for this patient.",
+    "contextual_analysis": "The RPM alert shows a home BP reading of 158/97 mmHg on 2026-06-15, exceeding the baseline threshold of 140/90 mmHg (RPM Alert). However, both the EHR retrieval and anamnesis agents report significant data limitations. The EHR has almost no verified data for this patient (EHR). The anamnesis agent indicates the patient is vague and uncertain about their own history, and cannot reliably recall relevant history (Anamnesis). Therefore, no established baseline BP or prior hypertension diagnosis can be confirmed from either source.",
+    "risk_assessment": "The elevated BP reading (158/97 mmHg) is concerning given the lack of confirmed baseline or prior diagnosis. This could represent new-onset or untreated hypertension, which carries risks of cardiovascular and renal complications. However, without reliable historical data, it is also possible this is a transient elevation due to various factors, or that the patient has a known history not captured by the EHR or recalled by the patient. The vagueness of the patient's history and the low confidence from both EHR and Anamnesis agents mean this reading must be interpreted with caution.",
+    "recommended_actions": "1. Obtain a full vital signs assessment including BP measurement in a clinical setting. 2. Attempt to establish a reliable BP baseline through further patient interview and EHR review, acknowledging current limitations. 3. Consider further diagnostic workup for hypertension based on clinical assessment and any new information gathered. Confidence: Medium.",
+    "uncertainties_and_gaps": "Significant gaps exist due to extremely limited EHR data and the patient's inability to reliably recall their medical history. The baseline blood pressure is unconfirmed. It is unclear if the patient has any diagnosed conditions or is on any medications not documented in the EHR. The patient's reported uncertainty adds to the low confidence in available information.",
+    "confidence_score": "low",
+    "source_citations": {
+      "from_ehr": [
+        "Almost no verified EHR data exists for this patient."
+      ],
+      "from_anamnesis": [
+        "Patient is vague and uncertain about own history.",
+        "Patient cannot reliably recall relevant history."
+      ],
+      "from_triage": [
+        "Urgency: Urgent",
+        "Reasoning: Elevated BP with unconfirmed baseline.",
+        "Clinical question: Is this patient's BP elevation a sign of untreated hypertension?"
+      ]
+    }
+  }
+}

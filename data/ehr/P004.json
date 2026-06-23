@@ -1,0 +1,43 @@
+{
+  "patient_id": "P004",
+  "demographics": {
+    "name": "Samuel Okafor",
+    "age": 59,
+    "sex": "M"
+  },
+  "problem_list": [
+    {
+      "icd10": "E11.9",
+      "description": "Type 2 Diabetes Mellitus",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    },
+    {
+      "icd10": "I10",
+      "description": "Essential Hypertension",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Metformin",
+      "dose": "unknown - per patient report",
+      "frequency": "unknown",
+      "prescribed_date": "unknown",
+      "status": "active",
+      "source": "patient-reported, unverified"
+    }
+  ],
+  "labs": [],
+  "visit_notes": [
+    {
+      "date": "2026-06-10T09:00:00",
+      "type": "New Patient Intake (Transfer)",
+      "note": "Patient transferring care from out-of-state. Reports history of Type 2 Diabetes and hypertension. Prior records requested from previous provider but not yet received. Treating on patient-reported history pending records."
+    }
+  ],
+  "allergies": [
+    "Unknown - pending records transfer"
+  ]
+}

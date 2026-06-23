@@ -1,0 +1,32 @@
+{
+  "scenario_id": "S3_silent_deterioration",
+  "title": "The Silent Deterioration",
+  "patient_id": "P003",
+  "tests": "Whether the system can detect a clinically significant trend that no single reading would trigger on its own, by combining a gradual RPM trend with corroborating anamnesis symptoms -- the core 'connecting the dots across time and sources' capability the whole project is built around.",
+
+  "input_alert": {
+    "alert_id": "ALT-P003-001",
+    "patient_id": "P003",
+    "timestamp": "2026-06-15T01:00:00",
+    "device_type": "smart scale",
+    "alert_category": "weight_trend",
+    "measured_values": {"value": 175.0, "unit": "lbs", "change_from_baseline": "+7.0 lbs over 14 days"},
+    "baseline_threshold": {"single_day_change_lbs": 3.0},
+    "note": "Each individual day-over-day delta was within single-reading threshold; alert triggered by cumulative 14-day trend rule."
+  },
+
+  "gold_standard_ccb": {
+    "alert_summary": "Cumulative weight gain of +7.0 lbs over 14 days (168.0 -> 175.0 lbs), flagged by trend-detection rather than any single day's reading, none of which individually exceeded the 3 lb/day threshold.",
+    "patient_snapshot": "71-year-old female with Congestive Heart Failure (HFrEF, EF 35% on last echo) and Essential Hypertension. Documented stable on cardiology follow-up 90 days ago: weight 168 lbs, no edema, BNP 410 pg/mL. Maintained on Furosemide 40mg daily, Carvedilol 12.5mg BID, Lisinopril 10mg daily.",
+    "contextual_analysis": "The gradual weight trend is corroborated by anamnesis: patient reports increasing bilateral ankle edema over the same 1-2 week window, worsening by end of day, and new mild exertional dyspnea climbing stairs to her third-floor walk-up apartment -- a task she previously performed without difficulty. Medication adherence log shows occasional missed evening Furosemide doses (90% adherence), which may be contributing. The combination of progressive weight gain, new lower-extremity edema, and new exertional dyspnea in a patient with known HFrEF is a classic pattern for fluid retention / early heart failure decompensation, even though no single vital sign reading crossed an acute threshold.",
+    "risk_assessment": "Moderate-to-high risk of fluid overload / early HF decompensation. While the patient denies orthopnea or paroxysmal nocturnal dyspnea (reassuring), the convergence of three independent signals (weight trend, edema, new exertional dyspnea) in a structurally compromised heart (EF 35%) warrants timely clinical attention before progression to overt decompensated heart failure.",
+    "recommended_actions": "Recommend prompt clinical contact (within 24-48 hours, not necessarily emergency) for volume status assessment -- consider diuretic dose adjustment and reinforcing adherence to evening Furosemide dose. Suggest repeat BNP and weight/edema re-check. Confidence: high that fluid retention is occurring; moderate on optimal intervention, which is a clinical judgment call.",
+    "uncertainties_and_gaps": "No current BNP value available (last was 90 days ago at 410 pg/mL, before this trend began) -- a fresh value would meaningfully sharpen risk stratification. The contribution of missed Furosemide doses versus disease progression cannot be cleanly separated from available data."
+  },
+
+  "tests_for_failure_modes": [
+    "System must NOT dismiss this alert just because no individual RPM reading crossed an acute threshold -- the whole point is trend detection across time.",
+    "System must NOT classify this as Critical/emergency -- patient denies orthopnea/PND, this is concerning but not acute decompensation requiring immediate escalation; it should land as Urgent.",
+    "System must connect weight trend + anamnesis edema + anamnesis dyspnea as one coherent picture, not report them as three disconnected findings."
+  ]
+}

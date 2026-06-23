@@ -1,0 +1,23 @@
+{
+  "patient_id": "P004",
+  "intake_form": {
+    "chief_complaint": "New patient, here to establish care after moving.",
+    "history_of_present_illness": "Patient reports a history of 'sugar problems' and 'high blood pressure' for about 8 years, previously managed by a doctor in another state. Could not recall exact medication names or doses with confidence. Reports occasional headaches recently.",
+    "review_of_systems": "Endorses occasional headaches. Denies chest pain, vision changes.",
+    "social_history": "Recently relocated for work. No regular exercise currently.",
+    "family_history": "Reports 'diabetes runs in the family' but no further detail available."
+  },
+  "symptom_diary": [
+    {
+      "date": "2026-06-11T09:00:00",
+      "entry": "Had a headache yesterday, took some ibuprofen, helped a bit."
+    }
+  ],
+  "medication_adherence_log": [
+    {
+      "medication": "Metformin (unconfirmed dose)",
+      "adherence_pct": null,
+      "note": "Patient reports taking 'a diabetes pill' most days but unsure of name/dose accuracy"
+    }
+  ]
+}

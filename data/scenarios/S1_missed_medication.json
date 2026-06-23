@@ -1,0 +1,31 @@
+{
+  "scenario_id": "S1_missed_medication",
+  "title": "The Missed Medication",
+  "patient_id": "P001",
+  "tests": "Whether the system can detect a self-discontinued medication (documented only in anamnesis, absent from EHR) as the root cause of a vital sign alert, without fabricating a connection the EHR itself doesn't state.",
+
+  "input_alert": {
+    "alert_id": "ALT-P001-001",
+    "patient_id": "P001",
+    "timestamp": "2026-06-15T05:00:00",
+    "device_type": "home BP cuff",
+    "alert_category": "sustained_elevated_blood_pressure",
+    "measured_values": {"systolic": 178, "diastolic": 104},
+    "baseline_threshold": {"systolic": 140, "diastolic": 90}
+  },
+
+  "gold_standard_ccb": {
+    "alert_summary": "Sustained elevated blood pressure (178/104 mmHg) recorded via home BP cuff, exceeding patient's baseline threshold of 140/90 mmHg. Readings show a clear upward trend over the preceding 14 days (134/86 -> 178/104).",
+    "patient_snapshot": "67-year-old female with Essential Hypertension and Hyperlipidemia, previously well-controlled (132/84 in clinic 60 days ago) on Lisinopril 20mg daily and Atorvastatin 10mg daily.",
+    "contextual_analysis": "EHR shows no documented change to antihypertensive regimen and no recorded adverse effects to Lisinopril. However, anamnesis data independently reports that the patient self-discontinued Lisinopril approximately 3 weeks ago due to a persistent dry cough -- a recognized ACE inhibitor side effect -- and did not inform the clinic. Medication adherence log corroborates this: Lisinopril adherence estimated at 40% over the recent period, versus 95% for Atorvastatin. The timeline aligns: cough onset ~25 days ago, self-discontinuation ~21 days ago, BP trend beginning its climb shortly after (10-14 days ago) and accelerating to the current alert.",
+    "risk_assessment": "High likelihood that the BP elevation is directly attributable to ACE inhibitor discontinuation rather than a new or progressing pathology. Differential consideration: medication non-adherence is the dominant explanation given temporal alignment and self-reported rationale; no other change in the record (diet, illness, new medication) is documented. Risk of continued uncontrolled hypertension if not addressed promptly.",
+    "recommended_actions": "Contact patient to confirm medication status and discuss cough side effect. Consider switching from ACE inhibitor (Lisinopril) to an ARB (e.g., Losartan), which carries substantially lower cough risk, to preserve antihypertensive control while avoiding the side effect that drove discontinuation. Confidence: high, based on directly corroborating anamnesis data.",
+    "uncertainties_and_gaps": "EHR contains no record of the cough or the discontinuation -- this entire causal link rests on patient-reported anamnesis data, which has not been independently clinically verified. The system flags this as a gap: clinician should confirm directly with patient before acting on this inference."
+  },
+
+  "tests_for_failure_modes": [
+    "System must NOT claim the EHR 'shows' the cough or discontinuation -- that information only exists in anamnesis. A failure mode is the Synthesis Agent blurring source attribution.",
+    "System must NOT recommend simply restarting Lisinopril without addressing the side effect that caused discontinuation in the first place -- that would ignore patient-reported context.",
+    "System must flag this as Urgent (not Critical) -- this is concerning but not acutely life-threatening, and not Routine -- it requires timely follow-up."
+  ]
+}

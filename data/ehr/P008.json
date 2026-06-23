@@ -1,0 +1,44 @@
+{
+  "patient_id": "P008",
+  "demographics": {
+    "name": "Robert Kowalski",
+    "age": 66,
+    "sex": "M"
+  },
+  "problem_list": [
+    {
+      "icd10": "I10",
+      "description": "Essential Hypertension",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Lisinopril",
+      "dose": "standard dose",
+      "frequency": "once daily",
+      "prescribed_date": "2025-01-31T09:00:00",
+      "status": "active"
+    }
+  ],
+  "labs": [
+    {
+      "test": "Basic Metabolic Panel",
+      "value": "within normal limits",
+      "unit": "n/a",
+      "date": "2026-04-16T09:00:00",
+      "flag": "normal"
+    }
+  ],
+  "visit_notes": [
+    {
+      "date": "2026-04-16T09:00:00",
+      "type": "Routine Follow-up",
+      "note": "Stable. Continue current management of Essential Hypertension."
+    }
+  ],
+  "allergies": [
+    "No known drug allergies"
+  ]
+}

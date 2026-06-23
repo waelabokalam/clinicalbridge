@@ -1,0 +1,32 @@
+{
+  "patient_id": "P005",
+  "intake_form": {
+    "chief_complaint": "Following up on blood pressure, says he's doing everything right.",
+    "history_of_present_illness": "Patient is adamant that he takes both blood pressure medications every single day without missing doses, and is frustrated that his numbers are still high despite this.",
+    "review_of_systems": "Denies chest pain, vision changes, headache.",
+    "social_history": "Recently started a physically demanding new job, reports high stress.",
+    "family_history": "Father had chronic kidney disease."
+  },
+  "symptom_diary": [
+    {
+      "date": "2026-05-31T09:00:00",
+      "entry": "Numbers still high even though I take my pills every morning."
+    },
+    {
+      "date": "2026-06-12T09:00:00",
+      "entry": "Work has been really stressful lately, new job is a lot."
+    }
+  ],
+  "medication_adherence_log": [
+    {
+      "medication": "Amlodipine",
+      "adherence_pct": 100,
+      "note": "Patient self-reports full adherence"
+    },
+    {
+      "medication": "Losartan",
+      "adherence_pct": 100,
+      "note": "Patient self-reports full adherence; conflicts with sub-therapeutic urine drug screen result in EHR"
+    }
+  ]
+}

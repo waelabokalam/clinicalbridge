@@ -1,0 +1,71 @@
+{
+  "patient_id": "P003",
+  "demographics": {
+    "name": "Rosa Fernandez",
+    "age": 71,
+    "sex": "F"
+  },
+  "problem_list": [
+    {
+      "icd10": "I50.22",
+      "description": "Congestive Heart Failure (HFrEF)",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    },
+    {
+      "icd10": "I10",
+      "description": "Essential Hypertension",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Furosemide",
+      "dose": "40mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-01-31T09:00:00",
+      "status": "active"
+    },
+    {
+      "name": "Carvedilol",
+      "dose": "12.5mg",
+      "frequency": "twice daily",
+      "prescribed_date": "2025-01-31T09:00:00",
+      "status": "active"
+    },
+    {
+      "name": "Lisinopril",
+      "dose": "10mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-01-31T09:00:00",
+      "status": "active"
+    }
+  ],
+  "labs": [
+    {
+      "test": "BNP",
+      "value": 410,
+      "unit": "pg/mL",
+      "date": "2026-03-17T09:00:00",
+      "flag": "high"
+    },
+    {
+      "test": "Creatinine",
+      "value": 1.1,
+      "unit": "mg/dL",
+      "date": "2026-03-17T09:00:00",
+      "flag": "normal"
+    }
+  ],
+  "visit_notes": [
+    {
+      "date": "2026-03-17T09:00:00",
+      "type": "Cardiology Follow-up",
+      "note": "HFrEF, EF 35% on last echo. Stable on current GDMT. Weight stable at 168 lbs in clinic. No peripheral edema noted on exam. Continue current regimen."
+    }
+  ],
+  "allergies": [
+    "No known drug allergies"
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "scenario_id": "S1_missed_medication",
+    "title": "The Missed Medication",
+    "status": "completed",
+    "confidence_score": "medium",
+    "triage_urgency": "Urgent"
+  },
+  {
+    "scenario_id": "S2_false_alarm",
+    "title": "The False Alarm",
+    "status": "completed",
+    "confidence_score": "high",
+    "triage_urgency": "Routine"
+  },
+  {
+    "scenario_id": "S3_silent_deterioration",
+    "title": "The Silent Deterioration",
+    "status": "completed",
+    "confidence_score": "medium",
+    "triage_urgency": "Urgent"
+  },
+  {
+    "scenario_id": "S4_incomplete_record",
+    "title": "The Incomplete Record",
+    "status": "completed",
+    "confidence_score": "low",
+    "triage_urgency": "Urgent"
+  },
+  {
+    "scenario_id": "S5_conflicting_data",
+    "title": "The Conflicting Data",
+    "status": "failed",
+    "confidence_score": null,
+    "triage_urgency": "Urgent"
+  }
+]

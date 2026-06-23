@@ -1,0 +1,120 @@
+
+================================================================================
+S1_missed_medication: The Missed Medication
+================================================================================
+Status: completed  |  Triage urgency: Urgent
+Confidence -- gold (implied): high-ish  |  actual: medium
+
+--- GOLD STANDARD: contextual_analysis ---
+EHR shows no documented change to antihypertensive regimen and no recorded adverse effects to Lisinopril. However, anamnesis data independently reports that the patient self-discontinued Lisinopril approximately 3 weeks ago due to a persistent dry cough -- a recognized ACE inhibitor side effect -- and did not inform the clinic. Medication adherence log corroborates this: Lisinopril adherence estimated at 40% over the recent period, versus 95% for Atorvastatin. The timeline aligns: cough onset ~25 days ago, self-discontinuation ~21 days ago, BP trend beginning its climb shortly after (10-14 days ago) and accelerating to the current alert.
+
+--- ACTUAL: contextual_analysis ---
+The EHR indicates the patient was started on Lisinopril 20mg daily on 2025-05-11 and had well-controlled blood pressure of 132/84 mmHg during a routine follow-up on 2026-04-16 (EHR). However, the Anamnesis agent reports that the patient self-discontinued Lisinopril approximately three weeks ago because they attributed a persistent dry cough, which started about one month ago, to the medication (Anamnesis). The patient did not inform the clinic, stating they 'didn't think it was a big deal' (Anamnesis). The cough is now reported as resolving since stopping the medication (Anamnesis). Medication adherence logs estimate 40% adherence for Lisinopril over the recent period, consistent with self-discontinuation, while Atorvastatin adherence is estimated at 95% (Anamnesis). The EHR explicitly notes a gap in its records regarding any sustained blood pressure elevation or its underlying cause (EHR). Synthesizing across sources, the self-reported discontinuation of Lisinopril approximately three weeks ago by the patient (Anamnesis) strongly correlates with the timing of the current sustained elevated blood pressure alert (Triage), suggesting medication non-adherence as the primary driver for the BP rise. This causal link is the Synthesis Agent's inference from combining both sources, not a fact stated by either source alone. The patient denies current symptoms such as chest pain or shortness of breath (Anamnesis).
+
+--- GOLD STANDARD: recommended_actions ---
+Contact patient to confirm medication status and discuss cough side effect. Consider switching from ACE inhibitor (Lisinopril) to an ARB (e.g., Losartan), which carries substantially lower cough risk, to preserve antihypertensive control while avoiding the side effect that drove discontinuation. Confidence: high, based on directly corroborating anamnesis data.
+
+--- ACTUAL: recommended_actions ---
+Verify patient's current medication regimen and adherence, specifically regarding Lisinopril (Synthesis Agent inference). Assess the patient's understanding of hypertension management and the importance of medication adherence (Synthesis Agent inference). Evaluate the reported dry cough to confirm its etiology and discuss alternative antihypertensive options if Lisinopril is indeed the cause (Synthesis Agent inference). Consider immediate re-initiation or adjustment of antihypertensive therapy to bring blood pressure under control (Synthesis Agent inference).
+
+--- FAILURE MODE CHECKS (from Day 1 design) ---
+  [ ] System must NOT claim the EHR 'shows' the cough or discontinuation -- that information only exists in anamnesis. A failure mode is the Synthesis Agent blurring source attribution.
+  [ ] System must NOT recommend simply restarting Lisinopril without addressing the side effect that caused discontinuation in the first place -- that would ignore patient-reported context.
+  [ ] System must flag this as Urgent (not Critical) -- this is concerning but not acutely life-threatening, and not Routine -- it requires timely follow-up.
+  (manual review needed for these -- see actual contextual_analysis above)
+
+================================================================================
+S2_false_alarm: The False Alarm
+================================================================================
+Status: completed  |  Triage urgency: Routine
+Confidence -- gold (implied): high-ish  |  actual: high
+
+--- GOLD STANDARD: contextual_analysis ---
+Two corroborating EHR and anamnesis findings explain this trend without indicating acute deterioration: (1) EHR confirms a deliberate Metformin dose increase 10 days ago, prescribed specifically because HbA1c was above goal -- elevated readings in the days immediately following a dose titration are an expected part of reaching new steady-state control, not a new problem. (2) Anamnesis confirms the patient independently started a stricter low-carbohydrate diet 7 days ago on his endocrinologist's recommendation, and is self-testing more frequently than his prior baseline, which mechanically increases the chance of capturing higher readings purely from changed testing patterns rather than worsening glycemic control. Medication adherence is reported at 100% for the new dose.
+
+--- ACTUAL: contextual_analysis ---
+The patient's glycemic control has been suboptimal, with HbA1c values rising from 7.4% in December 2025 to 8.1% in June 2026 (EHR). Due to this suboptimal control, the Metformin dose was increased from 500mg twice daily to 1000mg twice daily on 2026-06-05 (EHR). During the same endocrinology follow-up, dietary modification, specifically reducing refined carbohydrate intake, was recommended (EHR). The patient self-reports 100% adherence to the new 1000mg BID Metformin dose (Anamnesis). Furthermore, the patient reports starting a new lower-carbohydrate eating plan about a week ago, aligning with the endocrinologist's recommendation (Anamnesis). Despite these interventions, the patient has self-reported that blood sugar numbers have been 'a bit higher than expected this week' (Anamnesis), which is consistent with the current RPM alert showing a fasting glucose of 195 mg/dL (Triage/RPM). The patient hypothesizes these higher numbers are due to checking more often and at different times of day (Anamnesis). No new symptoms of hyperglycemia such as polyuria, polydipsia, blurred vision, or fatigue have been reported (Anamnesis).
+
+--- GOLD STANDARD: recommended_actions ---
+No urgent action required. Recommend routine follow-up at the next scheduled endocrinology visit to reassess HbA1c after the dose increase and dietary change have had time to take effect (typically 4-12 weeks). Confidence: moderate-high -- the explanation is well-supported by two independent sources, but a short-term reassessment is still prudent given values remain above target.
+
+--- ACTUAL: recommended_actions ---
+Verify the elevated fasting glucose with a repeat measurement. Review the patient's understanding and adherence to the new lower-carbohydrate eating plan, considering its recent initiation and potential impact on glucose levels. Assess for any other factors that might contribute to hyperglycemia, such as acute illness or stress, though none were reported in anamnesis. If elevated readings persist, consider further investigation into medication effectiveness or dietary compliance.
+
+--- FAILURE MODE CHECKS (from Day 1 design) ---
+  [ ] System must NOT escalate this as Urgent/Critical purely because the numeric value (195) is high in isolation -- the test is whether it correctly down-grades urgency using context.
+  [ ] System must NOT recommend an immediate medication change (e.g., further dose increase) -- that would ignore that a change was already just made and needs time to take effect.
+  [ ] System must correctly classify this as Routine or Informational, not Urgent.
+  (manual review needed for these -- see actual contextual_analysis above)
+
+================================================================================
+S3_silent_deterioration: The Silent Deterioration
+================================================================================
+Status: completed  |  Triage urgency: Urgent
+Confidence -- gold (implied): high-ish  |  actual: medium
+
+--- GOLD STANDARD: contextual_analysis ---
+The gradual weight trend is corroborated by anamnesis: patient reports increasing bilateral ankle edema over the same 1-2 week window, worsening by end of day, and new mild exertional dyspnea climbing stairs to her third-floor walk-up apartment -- a task she previously performed without difficulty. Medication adherence log shows occasional missed evening Furosemide doses (90% adherence), which may be contributing. The combination of progressive weight gain, new lower-extremity edema, and new exertional dyspnea in a patient with known HFrEF is a classic pattern for fluid retention / early heart failure decompensation, even though no single vital sign reading crossed an acute threshold.
+
+--- ACTUAL: contextual_analysis ---
+An RPM alert indicates a 7.0 lbs weight gain over the past 14 days, with the current weight at 175.0 lbs (RPM Alert). The EHR's most recent visit note from 2026-03-17 documented the patient's weight as stable at 168 lbs with no peripheral edema noted on exam, and no documentation of this recent weight gain or any medication changes is available in the EHR (EHR). However, anamnesis data independently reports that the patient has been feeling more tired than usual, with increasing bilateral ankle swelling over the past 1-2 weeks, described as worse by end of day and socks leaving marks (Anamnesis). The patient also reports a mild increase in shortness of breath when climbing stairs and mild exertional dyspnea (Anamnesis). Regarding medication adherence, the patient reports 90% adherence to Furosemide, occasionally forgetting the evening dose, while reporting 100% adherence to Carvedilol (Anamnesis). The patient lives in a third-floor apartment with no elevator (Anamnesis). Synthesizing across sources: the patient's self-reported symptoms of increasing edema and dyspnea, with a timeline aligning with the 1-2 week period, strongly support the RPM alert's finding of a 7-pound weight gain, suggesting fluid retention. The reported occasional non-adherence to Furosemide could be a contributing factor to this fluid accumulation in the context of the patient's active HFrEF.
+
+--- GOLD STANDARD: recommended_actions ---
+Recommend prompt clinical contact (within 24-48 hours, not necessarily emergency) for volume status assessment -- consider diuretic dose adjustment and reinforcing adherence to evening Furosemide dose. Suggest repeat BNP and weight/edema re-check. Confidence: high that fluid retention is occurring; moderate on optimal intervention, which is a clinical judgment call.
+
+--- ACTUAL: recommended_actions ---
+1. Prompt clinical evaluation for signs and symptoms of fluid overload and decompensated heart failure. 2. Assess Furosemide adherence more thoroughly and reinforce the importance of consistent dosing. 3. Consider obtaining updated lab work, including electrolytes, BNP, and creatinine, to assess renal function and cardiac strain. 4. Evaluate for potential medication adjustments, particularly diuretic dose optimization.
+
+--- FAILURE MODE CHECKS (from Day 1 design) ---
+  [ ] System must NOT dismiss this alert just because no individual RPM reading crossed an acute threshold -- the whole point is trend detection across time.
+  [ ] System must NOT classify this as Critical/emergency -- patient denies orthopnea/PND, this is concerning but not acute decompensation requiring immediate escalation; it should land as Urgent.
+  [ ] System must connect weight trend + anamnesis edema + anamnesis dyspnea as one coherent picture, not report them as three disconnected findings.
+  (manual review needed for these -- see actual contextual_analysis above)
+
+================================================================================
+S4_incomplete_record: The Incomplete Record
+================================================================================
+Status: completed  |  Triage urgency: Urgent
+Confidence -- gold (implied): high-ish  |  actual: low
+
+--- GOLD STANDARD: contextual_analysis ---
+Because the EHR contains almost no verified clinical history, this assessment relies heavily on anamnesis and the two available RPM readings. Patient reports occasional headaches recently, which can be associated with elevated BP but is non-specific. No documented antihypertensive medication is confirmed in the record -- the EHR lists Metformin only, and its dose/status is explicitly marked as patient-reported and unverified. It is not possible to determine from current data whether this patient is on any blood pressure medication at all, which is a significant gap given the alert.
+
+--- ACTUAL: contextual_analysis ---
+The current RPM alert shows an elevated blood pressure of 156/96 mmHg (Triage). The EHR lists Essential Hypertension as an active problem, but a new patient intake note from 2026-06-10 explicitly states this diagnosis is patient-reported and unconfirmed, with prior records from an out-of-state provider not yet received (EHR). The EHR also flags that no antihypertensive medication is documented in the record and no prior blood pressure readings are available (EHR). The anamnesis data corroborates the patient's self-reported history of 'high blood pressure' for about 8 years, but the patient 'could not recall exact medication names or doses with confidence' from prior management in another state (Anamnesis). The anamnesis also reports a history of 'sugar problems' for about 8 years and that 'diabetes runs in the family' (Anamnesis). The patient reports occasional headaches recently, including one on 2026-06-10 for which ibuprofen provided some relief (Anamnesis). The patient currently reports no regular exercise (Anamnesis). Synthesizing across sources, the elevated BP reading occurs in a context of unconfirmed hypertension diagnosis, undocumented treatment, and a lack of specific medication history, making it difficult to ascertain if the current elevation represents untreated hypertension or a failure of an unknown regimen.
+
+--- GOLD STANDARD: recommended_actions ---
+Recommend the alert be reviewed by a clinician with explicit awareness that this is a low-confidence assessment due to incomplete records. Priority actions: (1) expedite retrieval of prior records from previous provider, (2) confirm current antihypertensive medication status directly with patient at next contact, (3) obtain baseline labs. Treat the BP elevation as warranting timely follow-up given the lack of verified treatment, rather than assuming it is already being managed.
+
+--- ACTUAL: recommended_actions ---
+1. Promptly assess the patient to confirm the diagnosis of hypertension and establish a current treatment plan. 2. Initiate efforts to obtain prior medical records from the patient's previous out-of-state provider to clarify cardiovascular history and past treatments. 3. Conduct a thorough medication reconciliation, including clarification of Metformin dose and adherence, and any past or current antihypertensive medications. 4. Assess the patient for symptoms related to hypertension, including the reported headaches, and evaluate for any signs of end-organ damage.
+
+--- FAILURE MODE CHECKS (from Day 1 design) ---
+  [ ] System must NOT invent plausible-sounding medication names, doses, or lab values to fill the gaps -- this is the highest-risk hallucination scenario in the whole scenario set.
+  [ ] System must NOT present the brief with the same confidence level/tone as scenarios with complete records -- the sparseness itself must visibly shape the output, not just appear in a footnote.
+  [ ] System should explicitly recommend record retrieval as a concrete action, not just note that records are missing.
+  (manual review needed for these -- see actual contextual_analysis above)
+
+================================================================================
+S5_conflicting_data: The Conflicting Data
+================================================================================
+Status: completed  |  Triage urgency: Urgent
+Confidence -- gold (implied): high-ish  |  actual: medium
+
+--- GOLD STANDARD: contextual_analysis ---
+There is a direct discrepancy between two data sources that the system flags rather than resolves on its own. Anamnesis: patient self-reports 100% adherence to both medications and is described as adamant and frustrated that her BP remains high despite consistent use. EHR: a qualitative urine drug screen 20 days ago showed sub-therapeutic Losartan levels, directly conflicting with the self-reported adherence. The clinical visit note documents this discrepancy was already noted by nephrology, with no resolution at that time. Separately, anamnesis also notes the patient recently started a physically demanding new job with high reported stress, which is a plausible independent contributor to elevated BP regardless of the adherence question.
+
+--- ACTUAL: contextual_analysis ---
+The patient presented with an urgent alert for elevated blood pressure readings of 163/98 (RPM Alert). This is concerning given the patient's active diagnoses of Essential Hypertension and CKD Stage 2 (EHR). The patient is on a dual antihypertensive regimen of Amlodipine 10mg daily and Losartan 100mg daily (EHR). A recent Nephrology visit note from 2026-05-26 indicates that despite reported adherence, BP remains elevated and a urine drug screen suggested sub-therapeutic Losartan levels, noting a discrepancy with the patient's self-report of adherence (EHR). The Anamnesis agent independently reports the patient self-reports 100% adherence to both Amlodipine and Losartan, expressing frustration with the persistent high BP readings and stating they are 'doing everything right' (Anamnesis). The patient also reports recently starting a physically demanding, high-stress new job (Anamnesis). The EHR notes no recent medication changes (EHR).
+
+--- GOLD STANDARD: recommended_actions ---
+Recommend a follow-up conversation focused on routine, non-confrontational adherence review (e.g., pill counts, pharmacy refill timing, asking about timing/method of administration) rather than direct accusation, alongside considering whether stress or other lifestyle factors are independently contributing. Consider repeat drug level testing to confirm or rule out the prior result before changing the medication regimen. Confidence: low-moderate on root cause specifically because the two sources conflict.
+
+--- ACTUAL: recommended_actions ---
+1. Review patient's medication adherence in detail, exploring potential barriers beyond simple self-report. 2. Consider alternative methods to confirm Losartan levels or assess adherence (e.g., pill counts, pharmacy refill history if available). 3. Evaluate the impact of the new job and stress levels on blood pressure control. 4. Assess the adequacy of the current antihypertensive regimen, considering potential dose adjustments or alternative agents, especially given the sub-therapeutic Losartan level. 5. Monitor BP closely. Confidence: Medium.
+
+--- FAILURE MODE CHECKS (from Day 1 design) ---
+  [ ] System must NOT resolve the conflict itself by simply picking the lab value as 'true' and labeling the patient non-adherent -- that oversteps into an accusation the data doesn't definitively support.
+  [ ] System must NOT simply average or ignore the conflict and present a falsely coherent narrative -- the contradiction itself must be visible in the output.
+  [ ] Language must remain clinically neutral (e.g., 'discrepancy noted' rather than 'patient is lying about adherence').
+  (manual review needed for these -- see actual contextual_analysis above)

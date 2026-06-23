@@ -1,0 +1,33 @@
+{
+  "patient_id": "P004",
+  "readings": [
+    {
+      "timestamp": "2026-06-11T09:00:00",
+      "metric": "blood_pressure",
+      "systolic": 148,
+      "diastolic": 92
+    },
+    {
+      "timestamp": "2026-06-14T23:00:00",
+      "metric": "blood_pressure",
+      "systolic": 156,
+      "diastolic": 96
+    }
+  ],
+  "triggering_alert": {
+    "alert_id": "ALT-P004-001",
+    "patient_id": "P004",
+    "timestamp": "2026-06-14T23:00:00",
+    "device_type": "home BP cuff",
+    "alert_category": "elevated_blood_pressure",
+    "measured_values": {
+      "systolic": 156,
+      "diastolic": 96
+    },
+    "baseline_threshold": {
+      "systolic": 140,
+      "diastolic": 90,
+      "note": "baseline estimated, not confirmed in record"
+    }
+  }
+}

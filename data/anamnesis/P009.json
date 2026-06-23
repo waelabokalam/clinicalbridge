@@ -1,0 +1,23 @@
+{
+  "patient_id": "P009",
+  "intake_form": {
+    "chief_complaint": "Routine follow-up, no new complaints.",
+    "history_of_present_illness": "Stable, no changes reported.",
+    "review_of_systems": "Negative review of systems.",
+    "social_history": "No significant changes.",
+    "family_history": "Non-contributory."
+  },
+  "symptom_diary": [
+    {
+      "date": "2026-06-10T09:00:00",
+      "entry": "Feeling fine, no issues to report."
+    }
+  ],
+  "medication_adherence_log": [
+    {
+      "medication": "Metformin",
+      "adherence_pct": 95,
+      "note": "Taking as prescribed"
+    }
+  ]
+}

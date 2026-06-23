@@ -1,0 +1,18 @@
+# Environment
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Vector stores (regeneratable via scripts/build_*.py, no need to commit)
+chroma_db/
+
+# OS
+.DS_Store
+
+# Eval results (optional - you may want to keep these as evidence, see note below)
+# eval/results/*.json

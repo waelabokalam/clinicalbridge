@@ -1,0 +1,44 @@
+{
+  "patient_id": "P005",
+  "readings": [
+    {
+      "timestamp": "2026-06-05T09:00:00",
+      "metric": "blood_pressure",
+      "systolic": 152,
+      "diastolic": 92
+    },
+    {
+      "timestamp": "2026-06-09T09:00:00",
+      "metric": "blood_pressure",
+      "systolic": 158,
+      "diastolic": 95
+    },
+    {
+      "timestamp": "2026-06-13T09:00:00",
+      "metric": "blood_pressure",
+      "systolic": 160,
+      "diastolic": 97
+    },
+    {
+      "timestamp": "2026-06-15T06:00:00",
+      "metric": "blood_pressure",
+      "systolic": 163,
+      "diastolic": 98
+    }
+  ],
+  "triggering_alert": {
+    "alert_id": "ALT-P005-001",
+    "patient_id": "P005",
+    "timestamp": "2026-06-15T06:00:00",
+    "device_type": "home BP cuff",
+    "alert_category": "sustained_elevated_blood_pressure",
+    "measured_values": {
+      "systolic": 163,
+      "diastolic": 98
+    },
+    "baseline_threshold": {
+      "systolic": 140,
+      "diastolic": 90
+    }
+  }
+}

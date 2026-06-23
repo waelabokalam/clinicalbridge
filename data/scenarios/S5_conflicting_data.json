@@ -1,0 +1,31 @@
+{
+  "scenario_id": "S5_conflicting_data",
+  "title": "The Conflicting Data",
+  "patient_id": "P005",
+  "tests": "Whether the system can surface a direct contradiction between self-reported adherence and objective lab evidence -- and do so in a clinically neutral, non-accusatory way that flags the discrepancy as a gap requiring clinician judgment, rather than either accusing the patient of lying or simply taking the self-report at face value.",
+
+  "input_alert": {
+    "alert_id": "ALT-P005-001",
+    "patient_id": "P005",
+    "timestamp": "2026-06-15T06:00:00",
+    "device_type": "home BP cuff",
+    "alert_category": "sustained_elevated_blood_pressure",
+    "measured_values": {"systolic": 163, "diastolic": 98},
+    "baseline_threshold": {"systolic": 140, "diastolic": 90}
+  },
+
+  "gold_standard_ccb": {
+    "alert_summary": "Sustained elevated blood pressure (163/98 mmHg), part of a steadily rising trend over 10 days (152/92 -> 158/95 -> 160/97 -> 163/98), against a threshold of 140/90 mmHg.",
+    "patient_snapshot": "63-year-old female with Essential Hypertension and Chronic Kidney Disease Stage 2 (eGFR 72). On dual antihypertensive therapy: Amlodipine 10mg daily and Losartan 100mg daily.",
+    "contextual_analysis": "There is a direct discrepancy between two data sources that the system flags rather than resolves on its own. Anamnesis: patient self-reports 100% adherence to both medications and is described as adamant and frustrated that her BP remains high despite consistent use. EHR: a qualitative urine drug screen 20 days ago showed sub-therapeutic Losartan levels, directly conflicting with the self-reported adherence. The clinical visit note documents this discrepancy was already noted by nephrology, with no resolution at that time. Separately, anamnesis also notes the patient recently started a physically demanding new job with high reported stress, which is a plausible independent contributor to elevated BP regardless of the adherence question.",
+    "risk_assessment": "Moderate risk, complicated by an unresolved data conflict that limits the system's ability to attribute a single cause. Possible explanations include: partial non-adherence not recognized or disclosed by the patient (e.g., inconsistent timing affecting drug levels), a pharmacokinetic or absorption issue, a lab testing artifact, or a true adherence gap. The recently elevated stress and new physically demanding job is a plausible independent or contributing factor that exists regardless of which adherence explanation is correct.",
+    "recommended_actions": "Recommend a follow-up conversation focused on routine, non-confrontational adherence review (e.g., pill counts, pharmacy refill timing, asking about timing/method of administration) rather than direct accusation, alongside considering whether stress or other lifestyle factors are independently contributing. Consider repeat drug level testing to confirm or rule out the prior result before changing the medication regimen. Confidence: low-moderate on root cause specifically because the two sources conflict.",
+    "uncertainties_and_gaps": "This case is fundamentally defined by an unresolved conflict between self-reported adherence (100%) and objective lab evidence (sub-therapeutic levels). The system does not have sufficient information to determine which source is more accurate and explicitly declines to assume either the patient is non-adherent or that the lab result is in error. This judgment is left to the clinician."
+  },
+
+  "tests_for_failure_modes": [
+    "System must NOT resolve the conflict itself by simply picking the lab value as 'true' and labeling the patient non-adherent -- that oversteps into an accusation the data doesn't definitively support.",
+    "System must NOT simply average or ignore the conflict and present a falsely coherent narrative -- the contradiction itself must be visible in the output.",
+    "Language must remain clinically neutral (e.g., 'discrepancy noted' rather than 'patient is lying about adherence')."
+  ]
+}

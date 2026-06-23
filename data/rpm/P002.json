@@ -1,0 +1,50 @@
+{
+  "patient_id": "P002",
+  "readings": [
+    {
+      "timestamp": "2026-06-08T09:00:00",
+      "metric": "blood_glucose",
+      "value": 145,
+      "unit": "mg/dL",
+      "context": "fasting"
+    },
+    {
+      "timestamp": "2026-06-10T09:00:00",
+      "metric": "blood_glucose",
+      "value": 152,
+      "unit": "mg/dL",
+      "context": "fasting"
+    },
+    {
+      "timestamp": "2026-06-12T09:00:00",
+      "metric": "blood_glucose",
+      "value": 168,
+      "unit": "mg/dL",
+      "context": "fasting"
+    },
+    {
+      "timestamp": "2026-06-15T03:00:00",
+      "metric": "blood_glucose",
+      "value": 195,
+      "unit": "mg/dL",
+      "context": "fasting"
+    }
+  ],
+  "triggering_alert": {
+    "alert_id": "ALT-P002-001",
+    "patient_id": "P002",
+    "timestamp": "2026-06-15T03:00:00",
+    "device_type": "CGM",
+    "alert_category": "elevated_fasting_glucose",
+    "measured_values": {
+      "value": 195,
+      "unit": "mg/dL",
+      "context": "fasting"
+    },
+    "baseline_threshold": {
+      "value": 130,
+      "unit": "mg/dL",
+      "context": "fasting"
+    }
+  }
+}

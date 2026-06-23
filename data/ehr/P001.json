@@ -1,0 +1,69 @@
+{
+  "patient_id": "P001",
+  "demographics": {
+    "name": "Margaret Holloway",
+    "age": 67,
+    "sex": "F"
+  },
+  "problem_list": [
+    {
+      "icd10": "I10",
+      "description": "Essential Hypertension",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    },
+    {
+      "icd10": "E78.5",
+      "description": "Hyperlipidemia",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Lisinopril",
+      "dose": "20mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-05-11T09:00:00",
+      "status": "active"
+    },
+    {
+      "name": "Atorvastatin",
+      "dose": "10mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-05-11T09:00:00",
+      "status": "active"
+    }
+  ],
+  "labs": [
+    {
+      "test": "Potassium",
+      "value": 4.2,
+      "unit": "mEq/L",
+      "date": "2025-12-17T09:00:00",
+      "flag": "normal"
+    },
+    {
+      "test": "Creatinine",
+      "value": 0.9,
+      "unit": "mg/dL",
+      "date": "2025-12-17T09:00:00",
+      "flag": "normal"
+    }
+  ],
+  "visit_notes": [
+    {
+      "date": "2025-05-11T09:00:00",
+      "type": "Primary Care Visit",
+      "note": "Patient started on Lisinopril 20mg daily for BP control. Tolerating well at this visit. No cough reported today."
+    },
+    {
+      "date": "2026-04-16T09:00:00",
+      "type": "Primary Care Visit",
+      "note": "Routine follow-up. BP 132/84 in clinic, well controlled. Continue current regimen."
+    }
+  ],
+  "allergies": [
+    "No known drug allergies"
+  ]
+}

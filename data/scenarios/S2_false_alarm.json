@@ -1,0 +1,31 @@
+{
+  "scenario_id": "S2_false_alarm",
+  "title": "The False Alarm",
+  "patient_id": "P002",
+  "tests": "Whether the system can correctly identify a contextually benign alert -- i.e., recognize when an alert does NOT require escalation despite crossing a numeric threshold, by correlating RPM data against a recent, deliberate, clinician-directed change.",
+
+  "input_alert": {
+    "alert_id": "ALT-P002-001",
+    "patient_id": "P002",
+    "timestamp": "2026-06-15T03:00:00",
+    "device_type": "CGM",
+    "alert_category": "elevated_fasting_glucose",
+    "measured_values": {"value": 195, "unit": "mg/dL", "context": "fasting"},
+    "baseline_threshold": {"value": 130, "unit": "mg/dL", "context": "fasting"}
+  },
+
+  "gold_standard_ccb": {
+    "alert_summary": "Elevated fasting glucose (195 mg/dL) exceeding baseline threshold of 130 mg/dL, part of a rising trend over the past 7 days (145 -> 152 -> 168 -> 195 mg/dL).",
+    "patient_snapshot": "54-year-old male with Type 2 Diabetes Mellitus. HbA1c 8.1% at last check (14 days ago), above goal. Metformin dose recently increased from 500mg BID to 1000mg BID by endocrinology 10 days ago in response to suboptimal control.",
+    "contextual_analysis": "Two corroborating EHR and anamnesis findings explain this trend without indicating acute deterioration: (1) EHR confirms a deliberate Metformin dose increase 10 days ago, prescribed specifically because HbA1c was above goal -- elevated readings in the days immediately following a dose titration are an expected part of reaching new steady-state control, not a new problem. (2) Anamnesis confirms the patient independently started a stricter low-carbohydrate diet 7 days ago on his endocrinologist's recommendation, and is self-testing more frequently than his prior baseline, which mechanically increases the chance of capturing higher readings purely from changed testing patterns rather than worsening glycemic control. Medication adherence is reported at 100% for the new dose.",
+    "risk_assessment": "Low acute risk. The glucose trend is consistent with a patient actively engaged in a clinician-directed treatment intensification, not a sign of new pathology, missed medication, or acute decompensation. No symptoms of hyperglycemia (polyuria, polydipsia, blurred vision, fatigue) reported in review of systems.",
+    "recommended_actions": "No urgent action required. Recommend routine follow-up at the next scheduled endocrinology visit to reassess HbA1c after the dose increase and dietary change have had time to take effect (typically 4-12 weeks). Confidence: moderate-high -- the explanation is well-supported by two independent sources, but a short-term reassessment is still prudent given values remain above target.",
+    "uncertainties_and_gaps": "The system cannot confirm from available data whether the increased testing frequency alone accounts for the higher readings, or whether genuine glycemic variability during the diet transition is also contributing. No actual hypoglycemia or hyperglycemic symptoms are documented either way."
+  },
+
+  "tests_for_failure_modes": [
+    "System must NOT escalate this as Urgent/Critical purely because the numeric value (195) is high in isolation -- the test is whether it correctly down-grades urgency using context.",
+    "System must NOT recommend an immediate medication change (e.g., further dose increase) -- that would ignore that a change was already just made and needs time to take effect.",
+    "System must correctly classify this as Routine or Informational, not Urgent."
+  ]
+}

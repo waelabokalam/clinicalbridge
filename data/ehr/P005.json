@@ -1,0 +1,64 @@
+{
+  "patient_id": "P005",
+  "demographics": {
+    "name": "Elena Petrova",
+    "age": 63,
+    "sex": "F"
+  },
+  "problem_list": [
+    {
+      "icd10": "I10",
+      "description": "Essential Hypertension",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    },
+    {
+      "icd10": "N18.2",
+      "description": "Chronic Kidney Disease Stage 2",
+      "status": "active",
+      "onset_date": "2023-12-28T09:00:00"
+    }
+  ],
+  "medications": [
+    {
+      "name": "Amlodipine",
+      "dose": "10mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-08-19T09:00:00",
+      "status": "active"
+    },
+    {
+      "name": "Losartan",
+      "dose": "100mg",
+      "frequency": "once daily",
+      "prescribed_date": "2025-08-19T09:00:00",
+      "status": "active"
+    }
+  ],
+  "labs": [
+    {
+      "test": "Losartan level (urine drug screen, qualitative)",
+      "value": "sub-therapeutic",
+      "unit": "n/a",
+      "date": "2026-05-26T09:00:00",
+      "flag": "abnormal"
+    },
+    {
+      "test": "eGFR",
+      "value": 72,
+      "unit": "mL/min/1.73m2",
+      "date": "2026-05-26T09:00:00",
+      "flag": "normal"
+    }
+  ],
+  "visit_notes": [
+    {
+      "date": "2026-05-26T09:00:00",
+      "type": "Nephrology Follow-up",
+      "note": "BP remains elevated despite reported adherence to dual agent regimen. Urine drug screen suggests sub-therapeutic Losartan levels. Adherence discussed with patient; patient reports taking medications as prescribed. Discrepancy noted, will monitor."
+    }
+  ],
+  "allergies": [
+    "No known drug allergies"
+  ]
+}

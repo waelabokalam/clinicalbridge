@@ -1,0 +1,27 @@
+{
+  "patient_id": "P002",
+  "intake_form": {
+    "chief_complaint": "No new complaints.",
+    "history_of_present_illness": "Patient started a new lower-carbohydrate eating plan about a week ago on recommendation from his endocrinologist. Mentions he's been testing his blood sugar more often than usual to see how the new diet affects it.",
+    "review_of_systems": "Denies polyuria, polydipsia, blurred vision, fatigue.",
+    "social_history": "Works a desk job, moderate exercise 2x/week.",
+    "family_history": "Father had Type 2 Diabetes."
+  },
+  "symptom_diary": [
+    {
+      "date": "2026-06-08T09:00:00",
+      "entry": "Started the stricter carb counting my doctor recommended."
+    },
+    {
+      "date": "2026-06-13T09:00:00",
+      "entry": "Numbers have been a bit higher than I expected this week, but I think it's because I'm checking more often now and at different times of day."
+    }
+  ],
+  "medication_adherence_log": [
+    {
+      "medication": "Metformin",
+      "adherence_pct": 100,
+      "note": "Taking new 1000mg BID dose as prescribed"
+    }
+  ]
+}
