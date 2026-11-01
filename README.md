@@ -1,208 +1,76 @@
 # ClinicalBridge
 
-A multi-agent, LLM-powered prototype that synthesizes Electronic Health Records
-(EHR), Remote Patient Monitoring (RPM) alerts, and patient-reported Anamnesis
-data into a structured Clinical Context Brief — built for COP-3442 (Prompt
-Engineering), Bahçeşehir University.
+**Multi-agent RAG that turns a monitoring alert into a source-attributed context brief, with explicit escalation and failure handling.**
 
-**This is an educational prototype using entirely simulated, fictional patient
-data. It is not a clinical tool and must never be used for real clinical
-decision-making.** See `portfolio/PROJECT_REPORT.md`, Section on Ethical
-Considerations, for full disclaimers.
+Four specialist agents plus an orchestrator combine an alert, retrieved EHR history and patient-reported history. The engineering focus is keeping sources distinct, carrying uncertainty forward, and making safety-critical routing deterministic.
 
----
+This is an academic prototype using synthetic patient records, built for COP-3442 at Bahcesehir University. It is not a clinical decision tool.
 
-## What this does
+## Inspect the proof
 
-A clinician receives dozens of RPM alerts a day and often can't quickly tell
-which ones matter. ClinicalBridge takes a raw RPM alert (e.g., "blood pressure
-spiked") and automatically:
-
-1. **Triages** the alert's urgency
-2. **Retrieves** relevant EHR history via RAG (ChromaDB + Gemini embeddings)
-3. **Retrieves and interprets** the patient's self-reported history (symptoms,
-   adherence, lifestyle)
-4. **Synthesizes** all three into a single Clinical Context Brief with
-   explicit source citations, confidence scoring, and flagged uncertainties
-
-Critical alerts bypass the full pipeline and escalate immediately, per the
-safety guardrail in Chapter 6.5 of the project spec.
-
-## Example result
-
-Given an RPM alert showing a patient's blood pressure spiking over two weeks,
-ClinicalBridge's EHR agent correctly reports the medical record shows nothing
-unusual — then the Anamnesis agent independently surfaces that the patient
-quietly stopped taking their blood pressure medication three weeks earlier due
-to a side effect, without telling their doctor. The Synthesis agent connects
-these two facts, clearly marking the causal link as its own inference rather
-than blurring which source said what — see `data/scenarios/S1_missed_medication.json`
-for the full scenario and `portfolio/EVALUATION_REPORT.md` Section 2.1 for the
-actual system output.
+| Evidence | Where to look |
+|---|---|
+| **5/5 gold scenarios; 15/15 designed failure-mode checks** | [Evaluation report](portfolio/EVALUATION_REPORT.md) and [saved outputs](eval/results/); qualitative checks include manual review |
+| **8 targeted stress cases** | [`eval/stress_tests.py`](eval/stress_tests.py) |
+| A real schema defect, failed prompt-only fix, then a verified code fix | [Prompt engineering portfolio, section 3.6](portfolio/PROMPT_ENGINEERING_PORTFOLIO.md) |
+| Critical-alert bypass, retries and low-confidence fallbacks | [`orchestrator/orchestrator.py`](orchestrator/orchestrator.py) |
 
 ## Architecture
 
-```
-RPM Alert
-    |
-    v
-[Triage Agent] -- classifies urgency, writes retrieval queries
-    |
-    +-- Critical? --> immediate escalation, bypass everything below
-    |
-    v
-[EHR Agent]  (RAG over ChromaDB)      [Anamnesis Agent]  (RAG over ChromaDB)
-    |                                          |
-    +------------------+-----------------------+
-                       v
-              [Synthesis Agent]
-                       |
-                       v
-           Clinical Context Brief
+```mermaid
+flowchart TD
+    INPUT["Synthetic RPM alert"] --> TRIAGE["Triage agent"]
+    TRIAGE --> GUARD{"Critical urgency?"}
+    GUARD -->|yes| HUMAN["Immediate human escalation"]
+    GUARD -->|no| EHR["EHR agent: patient-filtered ChromaDB retrieval"]
+    EHR --> ANAM["Anamnesis agent: patient-reported history"]
+    ANAM --> SYN["Synthesis agent"]
+    SYN --> CCB["Clinical Context Brief with source labels and uncertainty"]
+    EHR --> LOG["Structured session log"]
+    ANAM --> LOG
+    SYN --> LOG
 ```
 
-Five components total: 4 specialized agents + 1 orchestrator. See
-`portfolio/PROMPT_ENGINEERING_PORTFOLIO.md` for full prompt design,
-temperature rationale, and per-agent testing detail.
+**Stack:** Python, LangChain, Gemini and ChromaDB. EHR and anamnesis retrieval are dispatched sequentially in the inspected implementation to accommodate provider rate limits.
 
-**Note:** the orchestrator dispatches EHR and Anamnesis retrieval
-*sequentially*, not in parallel as originally specified. This was a
-deliberate, documented adaptation to a free-tier API rate limit — see
-Portfolio Section 1 and the Project Report's Known Limitations for the full
-explanation.
+## The most useful failure story
 
-## Tech stack
+An off-topic EHR query exposed a missing-key defect: the model omitted `relevant_labs` instead of returning an empty list. A more explicit prompt and a matching example did not fix the repeated failure. Inspection confirmed retrieval had supplied the relevant context; the defect was in generated output.
 
-- **Orchestration:** LangChain
-- **LLM:** Google Gemini (`gemini-2.5-flash-lite` in the final configuration;
-  see Portfolio Section 1 for the full model-selection history)
-- **Vector store:** ChromaDB, with `gemini-embedding-001` embeddings
-- **Dataset:** 10 fully fictional patients, generated programmatically
-  (`scripts/generate_dataset.py`) — see Data Model section below
+The code-level fix normalizes the expected list fields after JSON parsing, before schema validation. The same stress case then returned a complete, valid structure. This is the tradeoff the project demonstrates: use the model for extraction and synthesis, and code for stable output contracts.
 
-## Repository structure
+| Boundary | Implementation choice |
+|---|---|
+| Critical escalation | Orchestrator branch bypasses downstream retrieval/synthesis |
+| Missing output fields | Deterministic normalization followed by schema validation |
+| Retrieval failure | Bounded retry, then explicit empty/low-confidence input |
+| Source disagreement | Preserve EHR and anamnesis attribution and uncertainty |
+| Terminal generation failure | Return a failed workflow with a session log |
 
-```
-clinicalbridge/
-├── README.md                          <- you are here
-├── SETUP.md                           <- environment setup walkthrough
-├── requirements.txt
-├── .env.example                       <- copy to .env, add your Gemini API key
-│
-├── data/
-│   ├── ehr/                           <- 10 patients' EHR records (JSON)
-│   ├── rpm/                           <- 10 patients' RPM streams + alerts (JSON)
-│   ├── anamnesis/                     <- 10 patients' self-reported history (JSON)
-│   └── scenarios/                     <- 5 gold-standard test scenarios
-│
-├── scripts/
-│   ├── patient_cohort.py              <- patient definitions
-│   ├── generate_dataset.py            <- generates all EHR/RPM/anamnesis data
-│   ├── build_ehr_vectorstore.py       <- chunks + embeds EHR into ChromaDB
-│   └── build_anamnesis_vectorstore.py <- chunks + embeds Anamnesis into ChromaDB
-│
-├── agents/
-│   ├── llm_client.py                  <- shared Gemini client config
-│   ├── triage_agent.py
-│   ├── ehr_agent.py
-│   ├── anamnesis_agent.py
-│   └── synthesis_agent.py
-│
-├── orchestrator/
-│   ├── orchestrator.py                <- main pipeline: routing, retries, safety guardrail
-│   └── test_critical_bypass.py        <- standalone test for the Critical-escalation path
-│
-├── eval/
-│   ├── run_all_scenarios.py           <- runs all 5 scenarios through the full pipeline
-│   ├── run_single_scenario.py         <- re-run one scenario by ID
-│   ├── compare_results.py             <- side-by-side gold-standard vs. actual output
-│   ├── stress_tests.py                <- 8 targeted edge-case test definitions
-│   ├── run_stress_tests.py            <- executes all 8 stress tests
-│   └── results/                       <- saved JSON output from every run
-│
-└── portfolio/
-    ├── PROMPT_ENGINEERING_PORTFOLIO.md  <- full prompts, iteration logs, failure analysis
-    ├── EVALUATION_REPORT.md             <- metrics, scenario results, known limitations
-    └── PROJECT_REPORT.md                <- updated capstone report
-```
+## Run and inspect
 
-## Running it
-
-See `SETUP.md` for full environment setup (venv, dependencies, Gemini API
-key).
+Use [SETUP.md](SETUP.md) for dependencies, vector-store preparation and provider configuration. Agent execution requires `GOOGLE_API_KEY`; `GEMINI_MODEL` configures the model. Keep credentials local.
 
 ```bash
-# 1. Build the vector stores (one-time, or whenever data/ changes)
-python3 -m scripts.build_ehr_vectorstore
-python3 -m scripts.build_anamnesis_vectorstore
-
-# 2. Run all 5 gold-standard scenarios end-to-end
-python3 -m eval.run_all_scenarios
-
-# 3. Compare actual output against gold standards
+# Inspect saved outputs without making model calls.
 python3 -m eval.compare_results
 
-# 4. Run the safety guardrail test
+# With the documented environment and vector stores configured:
+python3 -m eval.run_all_scenarios
 python3 -m orchestrator.test_critical_bypass
-
-# 5. Run the 8 stress tests
 python3 -m eval.run_stress_tests
 ```
 
-To process a single custom alert programmatically:
+`compare_results` displays gold/actual comparisons and the designed review checks. It does not automatically grade every semantic check. The 5/5 and 15/15 results are the documented project evaluation, not a clinical accuracy claim; retrieval precision/recall was not numerically measured.
 
-```python
-from orchestrator.orchestrator import process_alert
+## Source tour
 
-alert = {
-    "alert_id": "ALT-001",
-    "patient_id": "P001",
-    "timestamp": "2026-06-15T05:00:00",
-    "device_type": "home BP cuff",
-    "alert_category": "sustained_elevated_blood_pressure",
-    "measured_values": {"systolic": 178, "diastolic": 104},
-    "baseline_threshold": {"systolic": 140, "diastolic": 90},
-}
+- [`agents/triage_agent.py`](agents/triage_agent.py): structured urgency classification and retrieval queries.
+- [`agents/ehr_agent.py`](agents/ehr_agent.py): retrieval, output normalization and schema checks.
+- [`agents/anamnesis_agent.py`](agents/anamnesis_agent.py): patient-reported evidence.
+- [`agents/synthesis_agent.py`](agents/synthesis_agent.py): source-aware context brief.
+- [`eval/run_stress_tests.py`](eval/run_stress_tests.py): targeted edge-case execution.
 
-result = process_alert(alert)
-print(result["ccb"])  # the Clinical Context Brief
-```
+Course-project contributors listed in the evaluation report: Mhd Wael Abo Kalam, Marvan Ahmad, Talal Haneyeh and Karim S M Seyam.
 
-## Data model
-
-10 fictional patients across hypertension, type 2 diabetes, and heart failure
-— entirely fabricated, generated programmatically rather than hand-written.
-Patients P001-P005 are specifically constructed to each test one of the 5
-gold-standard scenarios (missed medication, false alarm, silent
-deterioration, incomplete record, conflicting data); P006-P010 exist purely
-to give the vector stores realistic multi-patient volume, so retrieval can be
-meaningfully tested against more than a single-patient store.
-
-## Evaluation highlights
-
-- **5/5 scenarios passed**, matching gold-standard urgency classification and
-  all 15 designed failure-mode checks (anti-hallucination, source
-  attribution, appropriate hedging under uncertainty).
-- **8 additional stress tests** probed spec-required behaviors the 5 main
-  scenarios don't exercise (urgency-boundary stability, missing input data,
-  EHR-internal contradictions, sensitive disclosures, colloquial language
-  translation, universal low-confidence synthesis). 7 passed outright; 1
-  surfaced a real bug.
-- **One real bug found and fixed**, with an honestly-reported failed first
-  attempt: see `portfolio/PROMPT_ENGINEERING_PORTFOLIO.md` Section 3.6 for
-  the full root-cause story.
-- **The Critical-alert safety guardrail was verified working**, not just
-  assumed correct — confirmed with a synthetic crisis-range alert that
-  correctly bypassed the full pipeline.
-
-Full detail in `portfolio/EVALUATION_REPORT.md`.
-
-## Known limitations
-
-Documented in full in `portfolio/PROJECT_REPORT.md` and
-`portfolio/EVALUATION_REPORT.md` Section 5. Briefly: sequential (not
-parallel) agent dispatch due to free-tier API rate limits; no numeric
-retrieval precision/recall computed; small sample size (10 patients, 5
-scenarios); single-evaluator grading against self-authored gold standards;
-end-to-end latency exceeds the spec's 30-second target due to the rate-limit
-mitigations.
+More shipped product work: [TQEN](https://tqentech.com), [Crave It](https://craveitsyria.com), and [sanitized production architecture case studies](https://github.com/waelabokalam/production-systems-architecture).
