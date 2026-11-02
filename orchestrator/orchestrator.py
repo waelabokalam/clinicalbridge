@@ -23,6 +23,7 @@ import json
 import os
 import time
 from datetime import datetime, timezone
+from orchestrator.observability import trace_operation
 
 from agents.triage_agent import run_triage
 from agents.ehr_agent import run_ehr_agent
@@ -48,6 +49,7 @@ def _log_event(session_log: list, agent: str, event: str, detail: dict = None):
     })
 
 
+@trace_operation("agent_attempt")
 def _run_with_retry(fn, *args, max_retries: int = 2, agent_name: str = "agent", **kwargs):
     """
     Simple retry wrapper (spec 6.5: 'implement retry logic and fallback strategies
@@ -72,6 +74,7 @@ def _run_with_retry(fn, *args, max_retries: int = 2, agent_name: str = "agent", 
     )
 
 
+@trace_operation("orchestrator")
 def process_alert(alert: dict) -> dict:
     """
     Main orchestration entrypoint (spec 4.2 data flow, steps 1-6).

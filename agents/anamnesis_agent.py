@@ -21,6 +21,7 @@ exercise it, since the agent will eventually run against unseen alerts too.
 """
 import json
 import os
+from orchestrator.observability import trace_operation
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -142,6 +143,7 @@ def get_vectorstore():
     )
 
 
+@trace_operation("anamnesis_retrieval")
 def retrieve_chunks(patient_id: str, query: str, k: int = 6) -> list[str]:
     """Same hard patient_id metadata filter as the EHR agent -- non-negotiable
     for a multi-patient store."""

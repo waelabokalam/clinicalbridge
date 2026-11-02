@@ -19,6 +19,7 @@ and breaks the moment the store has more than one patient in it.
 """
 import json
 import os
+from orchestrator.observability import trace_operation
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -161,6 +162,7 @@ def get_vectorstore():
     )
 
 
+@trace_operation("ehr_retrieval")
 def retrieve_chunks(patient_id: str, query: str, k: int = 6) -> list[str]:
     """
     Retrieves the top-k EHR chunks for a SPECIFIC patient only.

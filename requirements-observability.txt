@@ -1,0 +1,3 @@
+# Optional local evaluation instrumentation, not required for default execution.
+opentelemetry-sdk==1.45.2
+pytest==9.2.0
